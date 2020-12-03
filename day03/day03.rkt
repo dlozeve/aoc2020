@@ -32,3 +32,21 @@
 
 (module+ main
   (displayln (part1 "input")))
+
+(define slopes
+  '((1 1)
+    (1 3)
+    (1 5)
+    (1 7)
+    (2 1)))
+
+(define (part2 filename)
+  (define grid (read-input filename))
+  (for/product ([slope slopes])
+    (apply + (traj grid (car slope) (cadr slope)))))
+
+(module+ test
+  (check-equal? (part2 "test") 336))
+
+(module+ main
+  (displayln (part2 "input")))
