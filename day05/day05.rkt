@@ -44,3 +44,20 @@
   (apply max (for/list ([seat seats])
                (seat-id (binary-space-decode (car seat) 0 127)
                         (binary-space-decode (cadr seat) 0 7)))))
+
+(module+ main
+  (displayln (part1 "input")))
+
+(define max-seat (seat-id 127 7))
+(define min-seat (seat-id 0 0))
+
+(define (part2 filename)
+  (define seats (read-input filename))
+  (define ids (for/list ([seat seats])
+                (seat-id (binary-space-decode (car seat) 0 127)
+                         (binary-space-decode (cadr seat) 0 7))))
+  (define id-range (range (apply min ids) (apply max ids)))
+  (set-first (set-subtract (list->set id-range) (list->set ids))))
+
+(module+ main
+  (displayln (part2 "input")))
