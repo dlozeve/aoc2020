@@ -20,3 +20,18 @@
 
 (module+ main
   (displayln (part1 "input")))
+
+(define (count-intersection str)
+  (define answers (string-split str "\n"))
+  (set-count
+   (apply set-intersect
+          (map (compose list->set string->list) answers))))
+
+(define (part2 filename)
+  (apply + (map count-intersection (read-input filename))))
+
+(module+ test
+  (check-equal? (part2 "test") 6))
+
+(module+ main
+  (displayln (part2 "input")))
