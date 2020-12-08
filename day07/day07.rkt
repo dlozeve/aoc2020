@@ -1,6 +1,8 @@
-#lang racket
+#lang racket/base
 
-(require graph)
+(require racket/list
+         racket/string
+         graph)
 
 (module+ test
   (require rackunit))

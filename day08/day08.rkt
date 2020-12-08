@@ -1,4 +1,9 @@
-#lang racket
+#lang racket/base
+
+(require racket/string
+         racket/vector
+         racket/file
+         racket/match)
 
 (module+ test
   (require rackunit))
