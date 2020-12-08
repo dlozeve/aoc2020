@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
 enum operation {
   NOP,
@@ -63,14 +64,14 @@ struct result execute(size_t n, struct instruction program[n]) {
     default:
       printf("ERROR: invalid instruction %d %d in position %zu\n",
              program[ip].op, program[ip].arg, ip);
-      return (struct result) {.out = ERROR, .ret = 0};
+      return (struct result){.out = ERROR, .ret = 0};
     }
   }
 
   if (ip == n) {
-    return (struct result) {.out = END, .ret = acc};
+    return (struct result){.out = END, .ret = acc};
   }
-  return (struct result) {.out = LOOP, .ret = acc};
+  return (struct result){.out = LOOP, .ret = acc};
 }
 
 int main(int argc, char *argv[]) {
@@ -110,20 +111,32 @@ int main(int argc, char *argv[]) {
   fclose(fp);
 
   // Part 1
+  printf("Part 1: ");
+  struct timeval tv1, tv2;
+  gettimeofday(&tv1, NULL);
+
   struct result res = execute(n, program);
   if (res.out == LOOP) {
     printf("%d\n", res.ret);
   }
 
+  gettimeofday(&tv2, NULL);
+  printf("Time: %lds %ldµs\n", tv2.tv_sec - tv1.tv_sec,
+         tv2.tv_usec - tv1.tv_usec);
+
   // Part 2 (bruteforce)
-  for (size_t i = 0; i < n; ++i) {
+  printf("Part 2: ");
+  gettimeofday(&tv1, NULL);
+
+  bool finished = false;
+  i = 0;
+  while (!finished && i < n) {
     switch (program[i].op) {
     case NOP: {
       program[i].op = JMP;
       res = execute(n, program);
       if (res.out == END) {
-	printf("%d\n", res.ret);
-	return 0;
+        finished = true;
       }
       program[i].op = NOP;
       break;
@@ -132,8 +145,7 @@ int main(int argc, char *argv[]) {
       program[i].op = NOP;
       res = execute(n, program);
       if (res.out == END) {
-	printf("%d\n", res.ret);
-	return 0;
+        finished = true;
       }
       program[i].op = JMP;
       break;
@@ -141,7 +153,13 @@ int main(int argc, char *argv[]) {
     default:
       break;
     }
+    i++;
   }
+  printf("%d\n", res.ret);
+
+  gettimeofday(&tv2, NULL);
+  printf("Time: %lds %ldµs\n", tv2.tv_sec - tv1.tv_sec,
+         tv2.tv_usec - tv1.tv_usec);
 
   return 0;
 }
