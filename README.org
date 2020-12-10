@@ -13,7 +13,7 @@ My answers for [[https://adventofcode.com/2020][Advent of Code 2020]].
 | Day 7       |      2 |     |   2 |
 | Day 8       |      2 |   2 |     |
 | Day 9       |      2 |   2 |   2 |
-| Day 10      |      2 |     |     |
+| Day 10      |      2 |   2 |   2 |
 |-------------+--------+-----+-----|
-| *Total (%)* |    100 | 70. | 70. |
+| *Total (%)* |    100 | 80. | 80. |
 #+TBLFM: @>$2..$4=50*vmean(@I..@II);ENn3
