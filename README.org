@@ -2,17 +2,18 @@
 
 My answers for [[https://adventofcode.com/2020][Advent of Code 2020]].
 
-| Day         | [[https://racket-lang.org/][Racket]] |    C |  [[https://www.dyalog.com/][APL]] |
-|-------------+--------+------+------|
-| Day 1       |      2 |    2 |    2 |
-| Day 2       |      2 |    2 |    2 |
-| Day 3       |      2 |    2 |    2 |
-| Day 4       |      2 |      |      |
-| Day 5       |      2 |    2 |    2 |
-| Day 6       |      2 |    2 |    2 |
-| Day 7       |      2 |      |    2 |
-| Day 8       |      2 |    2 |      |
-| Day 9       |      2 |    2 |    2 |
-|-------------+--------+------+------|
-| *Total (%)* |    100 | 77.8 | 77.8 |
+| Day         | [[https://racket-lang.org/][Racket]] |   C | [[https://www.dyalog.com/][APL]] |
+|-------------+--------+-----+-----|
+| Day 1       |      2 |   2 |   2 |
+| Day 2       |      2 |   2 |   2 |
+| Day 3       |      2 |   2 |   2 |
+| Day 4       |      2 |     |     |
+| Day 5       |      2 |   2 |   2 |
+| Day 6       |      2 |   2 |   2 |
+| Day 7       |      2 |     |   2 |
+| Day 8       |      2 |   2 |     |
+| Day 9       |      2 |   2 |   2 |
+| Day 10      |      2 |     |     |
+|-------------+--------+-----+-----|
+| *Total (%)* |    100 | 70. | 70. |
 #+TBLFM: @>$2..$4=50*vmean(@I..@II);ENn3
