@@ -40,3 +40,49 @@
 
 (module+ main
   (displayln (part1 "input")))
+
+(define ((valid? rules) ticket)
+  (for/and ([val (in-list ticket)])
+    (for/or ([(name rule-proc) (in-hash rules)])
+      (rule-proc val))))
+
+(define (field-positions h)
+  (if (for/and ([(k v) (in-hash h)]) (= 1 (length v)))
+      (for/hash ([(k v) (in-hash h)]) (values k (car v)))
+      (begin
+        (for ([(name lst) (in-hash h)]
+              #:when (= 1 (length lst)))
+          (for ([(other-name other-lst) (in-hash h)]
+                #:unless (equal? other-name name))
+            (hash-set! h other-name (remove (car lst) other-lst))))
+        (field-positions h))))
+
+(define (determine-ticket filename)
+  (define-values (rules my-ticket nearby-tickets) (read-input filename))
+  (define valid-tickets (filter (valid? rules) nearby-tickets))
+  (define h (make-hash))
+  (for ([(name rule-proc) (in-hash rules)])
+    (hash-set! h name (range (length my-ticket))))
+  (for ([(name rule-proc) (in-hash rules)]
+        #:when #t
+        [ticket (in-list valid-tickets)]
+        #:when #t
+        [val (in-list ticket)]
+        [i (in-naturals)]
+        #:when (not (rule-proc val)))
+    (hash-update! h name (λ (lst) (remove i lst =))))
+  (define positions (field-positions h))
+  (for/hash ([(name pos) (in-hash positions)])
+    (values name (list-ref my-ticket pos))))
+
+(module+ test
+  (check-equal? (determine-ticket "test2") (hash "class" 12 "row" 11 "seat" 13)))
+
+(define (part2 filename)
+  (define ticket (determine-ticket filename))
+  (apply * (for/list ([(name val) (in-hash ticket)]
+                      #:when (string-prefix? name "departure"))
+             val)))
+
+(module+ main
+  (displayln (part2 "input")))
