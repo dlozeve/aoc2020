@@ -35,3 +35,29 @@
 
 (module+ main
   (displayln (part1 "input")))
+
+(define (eval-left-priority lst)
+  (match lst
+    [(? number? x) x]
+    [(list x) x]
+    [(list-rest a '* b '+ c r)
+     (eval-left-priority (list* a '* (+ (eval-left-priority b) (eval-left-priority c)) r))]
+    [(list-rest a '+ b r)
+     (eval-left-priority (cons (+ (eval-left-priority a) (eval-left-priority b)) r))]
+    [(list-rest a '* b r)
+     (eval-left-priority (cons (* (eval-left-priority a) (eval-left-priority b)) r))]))
+
+(module+ test
+  (check-equal? (eval-left-priority (parse-expression "1 + 2 * 3 + 4 * 5 + 6")) 231)
+  (check-equal? (eval-left-priority (parse-expression "1 + (2 * 3) + (4 * (5 + 6))")) 51)
+  (check-equal? (eval-left-priority (parse-expression "2 * 3 + (4 * 5)")) 46)
+  (check-equal? (eval-left-priority (parse-expression "5 + (8 * 3 + 9 + 3 * 4 * 3)")) 1445)
+  (check-equal? (eval-left-priority (parse-expression "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))")) 669060)
+  (check-equal? (eval-left-priority (parse-expression "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2")) 23340))
+
+(define (part2 filename)
+  (define input (read-input filename))
+  (apply + (map eval-left-priority input)))
+
+(module+ main
+  (displayln (part2 "input")))
