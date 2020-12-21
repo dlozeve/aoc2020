@@ -17,13 +17,24 @@
          [allergen (in-list (cadr food))])
     (define s (hash-ref h allergen (list->set (car food))))
     (hash-set! h allergen (set-intersect s (list->set (car food)))))
-  h)
+  (unique-allergens h))
+
+(define (unique-allergens h)
+  (if (for/and ([(k v) (in-hash h)]) (= 1 (set-count v)))
+      (for/hash ([(k v) (in-hash h)]) (values k (set-first v)))
+      (begin
+        (for ([(k v) (in-hash h)]
+              #:when (= 1 (set-count v))
+              [(other-k other-v) (in-hash h)]
+              #:unless (equal? other-k k))
+          (hash-set! h other-k (set-remove other-v (set-first v))))
+        (unique-allergens h))))
 
 (define (part1 filename)
   (define foods (read-input filename))
   (define allergens (find-allergens foods))
   (define all-ingredients (apply append (map car foods)))
-  (define allergen-ingredients (apply set-union (hash-values allergens)))
+  (define allergen-ingredients (hash-values allergens))
   (length (for/list ([ingredient (in-list all-ingredients)]
                      #:unless (set-member? allergen-ingredients ingredient))
             ingredient)))
@@ -33,3 +44,16 @@
 
 (module+ main
   (displayln (part1 "input")))
+
+(define (part2 filename)
+  (define foods (read-input filename))
+  (define allergens (find-allergens foods))
+  (define allergen-ingredients (for/list ([allergen (sort (hash-keys allergens) string<=?)])
+                                 (hash-ref allergens allergen)))
+  (string-join allergen-ingredients ","))
+
+(module+ test
+  (check-equal? (part2 "test") "mxmxvkd,sqjhc,fvjkl"))
+
+(module+ main
+  (displayln (part2 "input")))
