@@ -23,6 +23,8 @@ My answers for [[https://adventofcode.com/2020][Advent of Code 2020]].
 | Day 17      |      2 |    2 |      |
 | Day 18      |      2 |      |    1 |
 | Day 19      |      2 |      |      |
+| Day 20      |        |      |      |
+| Day 21      |      1 |      |      |
 |-------------+--------+------+------|
-| *Total (%)* |    100 | 68.4 | 52.6 |
+| *Total (%)* |   92.9 | 61.9 | 47.6 |
 #+TBLFM: @>$2..$4=50*vmean(@I..@II);ENn3
